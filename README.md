@@ -1,5 +1,4 @@
-oi aloooooo galera de cauboi alooooooooo galera de piao
-
+Bom dia a todas
 ENGENHARIA DA PIZZA 
 Temos como objetivo trazer eficiência e praticidade para a organização de arrecadações de alimento para entidades de caridade. 
 
