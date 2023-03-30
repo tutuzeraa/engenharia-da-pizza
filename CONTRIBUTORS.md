@@ -1,4 +1,4 @@
-1 - Nome do Cicrano (RAXXXXX)
+1 - Nome do Ciclano (RAXXXXX)
 2 - Nome do Fulano  (RAXXXXX)
 3 - Nome do Fulano  (RAXXXXX)
 4 - Nome do Fulano  (RAXXXXX)
