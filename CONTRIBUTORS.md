@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-1 - Artur Cavalcante  (RA248232)
-2 - João Deltregia    (RAXXXXX)
-3 - Pedro Bord        (RAXXXXX)
-4 - Fernanda Sanches  (RAXXXXX)
-=======
-1 - Artur Cavalcante  (RA248232)
-2 - João Deltregia    (RAXXXXX)
-3 - Pedro Bord        (RAXXXXX)
-4 - Fernanda Sanches  (RAXXXXX)
->>>>>>> atualizaContrib
+- Artur Alves Cavalcante de Barros    (248232)
+- Pedro Henrique Gonçalves Bordignon  (186938)
+- João Deltregia Martinelli           (248342)   
+- Fernanda Sanches Ferreira da Silva  (172565)
