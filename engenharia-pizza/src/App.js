@@ -1,23 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import 'firebase/compat/auth'
+import AvailabilityForm from "./components/AvailabilityForm";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB4xW6nPAPQnQBqgZFI7NlAuC5XRh09cAc",
+  authDomain: "engenharia-da-pizza-f4be5.firebaseapp.com",
+  projectId: "engenharia-da-pizza-f4be5",
+  storageBucket: "engenharia-da-pizza-f4be5.appspot.com",
+  messagingSenderId: "512466033746",
+  appId: "1:512466033746:web:70922f09ad48f1e230d38b"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Availability Form</h1>
+      <AvailabilityForm />
     </div>
   );
 }
