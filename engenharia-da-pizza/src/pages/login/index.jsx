@@ -1,7 +1,14 @@
-import logo from "../assets/logo.svg"
-import "./global.css"
-export function App() {
-  return <div className="container">
+
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { Link } from "react-router-dom";
+import React from "react";
+import logo from "../../assets/logo.svg"
+import "./styles.css"
+
+
+export function Login() {
+  return (
+  <div className="container">
     <header className = "header">
       <img src={logo} alt="Workflow logo" />
       <span>Textinho em Francês doidera</span>
@@ -40,5 +47,7 @@ export function App() {
       </div>
       
     </form>
-  </div>;
+  </div>
+  );
 }
+
