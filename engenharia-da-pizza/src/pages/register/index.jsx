@@ -62,7 +62,7 @@ export function Register() {
 
       <div className="footer">
         <p>Já tem conta? </p>
-        <Link to="../login">Faça login :)</Link>
+        <Link to="../">Faça login :)</Link>
         
       </div>
       

@@ -5,12 +5,11 @@ import React, { useState } from "react";
 import logo from "../../assets/logo.svg"
 import "./styles.css"
 import { auth } from "../../services/firebase";
-
-
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 
 export function Login() {
-
+  const provider = new GoogleAuthProvider();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [
@@ -28,6 +27,27 @@ export function Login() {
     return console.log(user);
   }
   
+
+  const authg = getAuth();
+  const signInGoogle = () => {
+    signInWithPopup(authg, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential.accessToken;
+        const user = result.user;
+        console.log(user)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+    }
+
+
   return (
   <div className="container">
     <header className = "header">
@@ -36,6 +56,12 @@ export function Login() {
     </header>
 
     <form>
+      <button type='button' className="googleButton" onClick={signInGoogle}>
+      <span className="googleButtonIcon">
+        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
+      </span>
+      <span className="googleButtonText">Faça login com o google</span>
+      </button>
       <div className="inputContainer">
         <label htmlFor="email">E-Mail</label>
         <input 
