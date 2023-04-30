@@ -28,10 +28,15 @@
   }
   
   .container .header span {
-    padding-top: 12px;
-    font-weight: 500;
+    margin-top: 100px;
+    font-weight: bold;
     font-size: 20px;
     line-height: 24px;
+    background-color: #4764e400;
+  }
+
+  .container .header img {
+    background-color: #4764e400;
   }
   
   .container form {
@@ -64,6 +69,10 @@
       border: 1px solid #5C73DB;
       border-radius: 12px;
       margin-bottom: 12px;
+  }
+
+  .footer .criarconta{
+    background-color: #5c73db00;
   }
   
   .container form a{

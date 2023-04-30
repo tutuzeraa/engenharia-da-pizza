@@ -1,11 +1,23 @@
 import "./global.css";
-import { AppRoutes } from "./routes/AppRoutes";
-import { AuthGoogleProvider } from "./contexts/authGoogle.jsx";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
+import { Register } from "./pages/register";
+import { Home } from "./pages/home";
+import { Login } from "./pages/login";
 export function App() {
   return (
-    <AuthGoogleProvider>
-      <AppRoutes />
-    </AuthGoogleProvider>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Login />} />
+        </Routes>
+        <Routes>
+          <Route path='/register' element={<Register />} />
+        </Routes>
+        <Routes>
+          <Route path='/home' element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }

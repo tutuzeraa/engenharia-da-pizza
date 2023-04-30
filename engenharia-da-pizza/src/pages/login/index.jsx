@@ -1,95 +1,105 @@
 
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
 import logo from "../../assets/logo.svg"
 import "./styles.css"
-import { auth } from "../../services/firebase";
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import { AuthGoogleContext } from "../../contexts/authGoogle";
+import { auth, provider, db } from "../../services/firebase";
+import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from 'react'
+import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { authContext } from "../../contexts/authContext";
+
 
 
 export function Login() {
-  const { signInGoogle, signed } = useContext(AuthGoogleContext);
-  async function handleLoginFromGoogle() {
-    await signInGoogle();
+  // * Signin with email and password States
+  const navigate = useNavigate()
+  const [emailSignIn, setEmailSignIn] = useState('')
+  const [passwordSignIn, setPasswordSignIn] = useState('')
+
+  // * SignIn function with email and password
+  const SignIn = async (event) => {
+    event.preventDefault();
+    try {
+      const email = emailSignIn;
+      const password = passwordSignIn;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user)
+      setEmailSignIn("");
+      setPasswordSignIn("");
+      navigate('/Home')
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
+
+  // * SignIn with Google
+  const signInWithGoogle = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, provider)
+      const user = userCredential.user
+      const email = user.email;
+      const usersCollectionRef = doc(db, 'users', user.uid);
+      await setDoc(usersCollectionRef, { email, googleAuth: true });
+      navigate('/Home')
+
+    } catch (error) {
+      console.log('error: ', error);
+    }
   }
 
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [
-    signInWithEmailAndPassword,
-    user,
-    loading,
-    error,
-  ] = useSignInWithEmailAndPassword(auth);
+  return (
+    <div className="container">
+      <header className="header">
+        <img src={logo} alt="Workflow logo" />
+        <span>Informe suas credenciais</span>
+      </header>
 
-  function handleLogin(e) {
-    e.preventDefault();
-    signInWithEmailAndPassword(email, password)
-  }
-  if (user) {
-    return console.log(user);
-  }
+      <form>
+        <button type='button' className="googleButton" onClick={signInWithGoogle}>
+          <span className="googleButtonIcon">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
+          </span>
+          <span className="googleButtonText">Faça login com o google</span>
+        </button>
+        <div className="inputContainer">
+          <label htmlFor="email">E-Mail</label>
+          <input
+            type="text"
+            name="email"
+            id="email"
+            placeholder="johndoe@gmail.com"
+            onChange={(e) => setEmailSignIn(e.target.value)}
+          />
+        </div>
 
+        <div className="inputContainer">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="***************"
+            onChange={(e) => setPasswordSignIn(e.target.value)}
+          />
+        </div>
 
+        <a href="">Esqueceu sua senha?</a>
 
-  if (!signed) {
-    return (
-      <div className="container">
-        <header className="header">
-          <img src={logo} alt="Workflow logo" />
-          <span>Informe suas credenciais</span>
-        </header>
+        <button className="button" onClick={SignIn}>
+          Se conectar
+          <img src="" alt="" />
+        </button>
 
-        <form>
-          <button type='button' className="googleButton" onClick={signInGoogle}>
-            <span className="googleButtonIcon">
-              <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
-            </span>
-            <span className="googleButtonText">Faça login com o google</span>
-          </button>
-          <div className="inputContainer">
-            <label htmlFor="email">E-Mail</label>
-            <input
-              type="text"
-              name="email"
-              id="email"
-              placeholder="johndoe@gmail.com"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+        <div className="footer">
+          <p>Ainda não tem conta? <Link to="/register" className="criarconta">Criar Conta</Link></p>
 
-          <div className="inputContainer">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="***************"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
+        </div>
 
-          <a href="">Esqueceu sua senha?</a>
+      </form>
+    </div>
+  );
 
-          <button className="button" onClick={handleLogin}>
-            Se conectar
-            <img src="" alt="" />
-          </button>
-
-          <div className="footer">
-            <p>Ainda não tem conta? <Link to="/register">Criar Conta</Link></p>
-
-          </div>
-
-        </form>
-      </div>
-    );
-
-  } else {
-    return <Navigate to="/Home" />;
-  }
 }
