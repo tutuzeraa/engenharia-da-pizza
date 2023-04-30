@@ -4,10 +4,10 @@ import logo from '../../assets/logo.svg'
 import userpic from '../../assets/userpic.svg'
 import ilustracaoDisponibilidade from '../../assets/ilustraçãoDisponibilidade.svg'
 import './style.css'
-import { authContext } from '../../contexts/authContext.jsx';
+import { useAuth } from '../../contexts/authContext.jsx';
 
 export const Home = () => {
-    const { user, signed } = useContext(authContext);
+    const { user, signed } = useAuth;
     console.log(user)
     return (
         <div>

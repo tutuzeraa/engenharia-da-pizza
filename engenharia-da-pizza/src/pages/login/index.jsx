@@ -7,47 +7,18 @@ import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from 'react'
 import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { authContext } from "../../contexts/authContext";
+import { authContext, useAuth } from "../../contexts/authContext";
 
 
 
 export function Login() {
   // * Signin with email and password States
+  const { signInWithGoogle, login } = useAuth();
   const navigate = useNavigate()
-  const [emailSignIn, setEmailSignIn] = useState('')
-  const [passwordSignIn, setPasswordSignIn] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  // * SignIn function with email and password
-  const SignIn = async (event) => {
-    event.preventDefault();
-    try {
-      const email = emailSignIn;
-      const password = passwordSignIn;
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      console.log(user)
-      setEmailSignIn("");
-      setPasswordSignIn("");
-      navigate('/Home')
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  };
 
-  // * SignIn with Google
-  const signInWithGoogle = async () => {
-    try {
-      const userCredential = await signInWithPopup(auth, provider)
-      const user = userCredential.user
-      const email = user.email;
-      const usersCollectionRef = doc(db, 'users', user.uid);
-      await setDoc(usersCollectionRef, { email, googleAuth: true });
-      navigate('/Home')
-
-    } catch (error) {
-      console.log('error: ', error);
-    }
-  }
 
 
   return (
@@ -58,7 +29,7 @@ export function Login() {
       </header>
 
       <form>
-        <button type='button' className="googleButton" onClick={signInWithGoogle}>
+        <button type='button' className="googleButton" onClick={signInWithGoogle()}>
           <span className="googleButtonIcon">
             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
           </span>
@@ -71,7 +42,7 @@ export function Login() {
             name="email"
             id="email"
             placeholder="johndoe@gmail.com"
-            onChange={(e) => setEmailSignIn(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -82,13 +53,13 @@ export function Login() {
             name="password"
             id="password"
             placeholder="***************"
-            onChange={(e) => setPasswordSignIn(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
         <a href="">Esqueceu sua senha?</a>
 
-        <button className="button" onClick={SignIn}>
+        <button className="button" onClick={login(email, password)}>
           Se conectar
           <img src="" alt="" />
         </button>
