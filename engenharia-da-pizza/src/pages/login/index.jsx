@@ -7,18 +7,46 @@ import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from 'react'
 import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { authContext, useAuth } from "../../contexts/authContext";
+import { AuthContext } from "../../contexts/authContext";
 
 
 
 export function Login() {
   // * Signin with email and password States
-  const { signInWithGoogle, login } = useAuth();
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  // *  function with email and password
+  const SignIn = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user)
+      setEmail("");
+      setPassword("");
+      navigate('/Home')
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  };
 
+  // * SignIn with Google
+  const signInWithGoogle = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, provider)
+      const user = userCredential.user
+      const email = user.email;
+      const usersCollectionRef = doc(db, 'users', user.uid);
+      await setDoc(usersCollectionRef, { email, googleAuth: true });
+      navigate('/Home')
+
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
 
 
   return (
@@ -29,7 +57,7 @@ export function Login() {
       </header>
 
       <form>
-        <button type='button' className="googleButton" onClick={signInWithGoogle()}>
+        <button type='button' className="googleButton" onClick={signInWithGoogle}>
           <span className="googleButtonIcon">
             <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
           </span>
@@ -59,7 +87,7 @@ export function Login() {
 
         <a href="">Esqueceu sua senha?</a>
 
-        <button className="button" onClick={login(email, password)}>
+        <button className="button" onClick={SignIn}>
           Se conectar
           <img src="" alt="" />
         </button>

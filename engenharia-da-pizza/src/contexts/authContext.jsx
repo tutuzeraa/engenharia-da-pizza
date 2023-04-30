@@ -1,60 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../services/firebase';
 
-const authContext = React.createContext({
-    currentUser: null,
-    signInWithGoogle: () => Promise,
-    login: () => Promise,
-    register: () => Promise,
-    logout: () => Promise,
-    forgotPassword: () => Promise,
-    resetPassword: () => Promise,
-});
+export const AuthContext = React.createContext({});
 
-export const useAuth = () => useContext(authContext)
-
-export const authProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+    const [signed, setSigned] = useState(false)
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, user => {
-            setCurrentUser(user ? user : null)
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setSigned(true)
+                setUser(user)
+            } else {
+                setUser(null);
+            }
         })
-        return () => {
-            unsubscribe()
-        }
+
+        // * cleanup;
+        return unsubscribe;
     }, [])
 
-    useEffect(() => {
-        console.log('The user is', currentUser)
-    }, [currentUser])
-
-    function login(email, password) {
-        return signInWithEmailAndPassword(auth, email, password)
-    }
-
-    function signInWithGoogle() {
-        const provider = new GoogleAuthProvider()
-        return signInWithPopup(auth, provider)
-    }
-
-    function logout() {
-        return signOut(auth)
-    }
-
-    const value = {
-        currentUser,
-        signInWithGoogle,
-        login,
-        logout,
-    }
-
-
+    const value = { signed, setSigned, user, setUser };
 
     return (
-        <authContext.Provider value={value}>
+        <AuthContext.Provider value={value}>
             {children}
-        </authContext.Provider>
+        </AuthContext.Provider>
     );
 };

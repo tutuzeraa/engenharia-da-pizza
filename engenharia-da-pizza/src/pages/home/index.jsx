@@ -4,16 +4,16 @@ import logo from '../../assets/logo.svg'
 import userpic from '../../assets/userpic.svg'
 import ilustracaoDisponibilidade from '../../assets/ilustraçãoDisponibilidade.svg'
 import './style.css'
-import { useAuth } from '../../contexts/authContext.jsx';
+import { AuthContext } from '../../contexts/authContext.jsx';
 
 export const Home = () => {
-    const { user, signed } = useAuth;
+    const { user, signed } = useContext(AuthContext);
     console.log(user)
     return (
         <div>
             <div className='header'>
                 <img className='logo' src={logo} alt="logo da Agendando Um Jeito" />
-                <label className='email' htmlFor="email" placeholder=''>{user}</label>
+                <label className='email' htmlFor="email" placeholder=''>{user.email}</label>
                 <img className='userpic' src={userpic} alt="foto do usuário logado" />
                 <button> <a href="../">sair</a> </button>
             </div>
