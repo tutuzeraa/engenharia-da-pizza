@@ -3,9 +3,29 @@ import firebase from 'firebase/compat/app';
 import DateFnsUtils from '@date-io/date-fns';
 import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { Button, TextField, Typography } from '@material-ui/core';
+import {makeStyles} from "@material-ui/core/styles";
+import {createTheme} from "@material-ui/core";
+import {ThemeProvider} from "@material-ui/styles";
+ 
+const materialTheme = createTheme({
+    overrides: {
+        MuiPickersToolbar: {
+            toolbar: {
+                backgroundColor: "#8bc34a",
+            },
+        },
+        MuiPickersCalendarHeader: {
+            switchHeader: {
+                backgroundColor: "white",
+                color: "#1b5e20",
+            },
+        },
+    },
+});
 
 
-const AvailabilityForm = () => {
+
+export function AvailabilityForm() {
     const [date, setDate] = useState(new Date());
     const [times, setTimes] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
@@ -60,7 +80,8 @@ const AvailabilityForm = () => {
         <h2>Enter your availability</h2>
         <form onSubmit={handleSubmit}>
         <Typography variant="h6">Select your availability:</Typography>
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <ThemeProvider theme={materialTheme}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DateTimePicker onChange={setDate} value={date} 
             label="Date and time"
             ampm={false}
@@ -68,7 +89,9 @@ const AvailabilityForm = () => {
             fullWidth
             inputFormat="yyyy/MM/dd HH:mm"
             />
-        </MuiPickersUtilsProvider>
+          </MuiPickersUtilsProvider>
+        </ThemeProvider>
+        
           
           {editingIndex !== null && (
             <Button type="button" onClick={() => setEditingIndex(null)}>
@@ -105,4 +128,4 @@ const AvailabilityForm = () => {
     );
   };
   
-  export default AvailabilityForm;
+  

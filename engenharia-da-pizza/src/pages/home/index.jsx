@@ -5,7 +5,7 @@ import userpic from '../../assets/userpic.svg'
 import ilustracaoDisponibilidade from '../../assets/ilustraçãoDisponibilidade.svg'
 import './style.css'
 import { AuthContext } from '../../contexts/authContext.jsx';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 export const Home = () => {
     const { user, logout, signed } = useContext(AuthContext);
@@ -22,7 +22,7 @@ export const Home = () => {
 
                 <div className='body'>
                     <img className='ilustracao' src={ilustracaoDisponibilidade} alt="Ilustração de uma pessoa em frente a um calendário gigante" />
-                    <button className='button'>Preencha sua Disponibilidade</button>
+                    <Link to={'/AvailabilityForm'}><button className='button'>Preencha sua Disponibilidade</button></Link>
                 </div>
 
             </div >

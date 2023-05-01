@@ -5,6 +5,8 @@ import { Register } from "./pages/register";
 import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { AuthProvider } from "./contexts/authContext";
+import { AvailabilityForm } from "./pages/form/AvailabilityForm";
+
 export function App() {
   return (
     <AuthProvider>
@@ -12,12 +14,9 @@ export function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Login />} />
-          </Routes>
-          <Routes>
             <Route path='/register' element={<Register />} />
-          </Routes>
-          <Routes>
             <Route path='/home' element={<Home />} />
+            <Route path='/AvailabilityForm' element={<AvailabilityForm />} />
           </Routes>
         </BrowserRouter>
       </div>
