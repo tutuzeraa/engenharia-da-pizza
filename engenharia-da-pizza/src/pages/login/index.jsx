@@ -6,7 +6,7 @@ import { auth, provider, db } from "../../services/firebase";
 import { useNavigate } from "react-router-dom";
 import React, { useContext, useState } from 'react'
 import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { AuthContext } from "../../contexts/authContext";
 
 
@@ -40,7 +40,7 @@ export function Login() {
       const user = userCredential.user
       const email = user.email;
       const usersCollectionRef = doc(db, 'users', user.uid);
-      await setDoc(usersCollectionRef, { email, googleAuth: true });
+      await updateDoc(usersCollectionRef, { email, googleAuth: true });
       navigate('/Home')
 
     } catch (error) {

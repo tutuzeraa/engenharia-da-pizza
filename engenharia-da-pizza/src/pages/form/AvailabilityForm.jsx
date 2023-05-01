@@ -1,34 +1,25 @@
-import React, { useState } from 'react';
-import firebase from 'firebase/compat/app';
-import DateFnsUtils from '@date-io/date-fns';
-import { DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { Button, TextField, Typography } from '@material-ui/core';
-import {makeStyles} from "@material-ui/core/styles";
-import {createTheme} from "@material-ui/core";
-import {ThemeProvider} from "@material-ui/styles";
- 
-const materialTheme = createTheme({
-    overrides: {
-        MuiPickersToolbar: {
-            toolbar: {
-                backgroundColor: "#8bc34a",
-            },
-        },
-        MuiPickersCalendarHeader: {
-            switchHeader: {
-                backgroundColor: "white",
-                color: "#1b5e20",
-            },
-        },
-    },
-});
+import React, { useState, useContext, useEffect } from 'react';
+import 'firebase/compat/firestore'
+import { db } from "../../services/firebase";
+import { AuthContext } from '../../contexts/authContext.jsx';
+import { Button} from '@material-ui/core';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import './AvailabilityForm.css'; // Import the CSS file
+
+import logo from '../../assets/logo.svg'
+import userpic from '../../assets/userpic.svg'
+import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { Navigate } from 'react-router-dom';
 
 
 
-export function AvailabilityForm() {
+export const AvailabilityForm = () => {
     const [date, setDate] = useState(new Date());
     const [times, setTimes] = useState([]);
     const [editingIndex, setEditingIndex] = useState(null);
+    const { user, logout, signed } = useContext(AuthContext);
+    //console.log(user.uid);
   
     const handleSubmit = (e) => {
       e.preventDefault();
@@ -62,11 +53,9 @@ export function AvailabilityForm() {
       setTimes([]);
     };
   
-    const handleSave = () => {
-      const db = firebase.firestore();
-      db.collection("users").doc('ZsCAoHiByW0JKUBoUvOn').update({
-        availability: times
-      })
+    const handleSave = async () => {
+      const currentUser = doc(db, 'users', user.uid);
+      await updateDoc(currentUser, {availability:times})
       .then(() => {
         console.log("Availability saved successfully!");
       })
@@ -74,58 +63,95 @@ export function AvailabilityForm() {
         console.error("Error saving availability: ", error);
       });
     };
-  
-    return (
+
+    const handleLoadData = async () => {
+      const currentUser = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(currentUser);
+      const info  = docSnap.data();
+      if (info.availability && info.availability.length > 0) {
+        setTimes([...info.availability])
+      }
+
+    };
+
+    const handleNotSigned = () =>{
+      return <Navigate to='/' />
+    }
+
+    useEffect(() => {
+      if (signed) {
+        handleLoadData()
+      }else{
+        handleNotSigned()
+      }
+      
+    }, []);
+
+    if (signed)
+    {return (
       <div>
-        <h2>Enter your availability</h2>
-        <form onSubmit={handleSubmit}>
-        <Typography variant="h6">Select your availability:</Typography>
-        <ThemeProvider theme={materialTheme}>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <DateTimePicker onChange={setDate} value={date} 
-            label="Date and time"
-            ampm={false}
-            disablePast
-            fullWidth
-            inputFormat="yyyy/MM/dd HH:mm"
-            />
-          </MuiPickersUtilsProvider>
-        </ThemeProvider>
-        
+        <div className='header'>
+                    <img className='logo' src={logo} alt="logo da Agendando Um Jeito" />
+                    <label className='email' htmlFor="email" placeholder=''>{user.email}</label>
+                    <img className='userpic' src={userpic} alt="foto do usuário logado" />
+                    <button onClick={() => logout()}> sair </button>
+        </div >
+        <div className='body'>
+
+          <h2>Marque sua Disponibilidade</h2>
           
-          {editingIndex !== null && (
-            <Button type="button" onClick={() => setEditingIndex(null)}>
-              Cancel
-            </Button>
+          <form onSubmit={handleSubmit}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateTimePicker onChange={setDate} value={date} 
+              label="Clique para adicionar data e horário"
+              ampm={false}
+              disablePast
+              fullWidth
+              inputFormat="dd/MM/yyyy HH:mm"
+              format="dd/MM/yyyy HH:mm"
+              style={{ zIndex: 9999 }}
+              />
+            
+          </LocalizationProvider>
+
+            
+            {editingIndex !== null && (
+              <Button type="button" onClick={() => setEditingIndex(null)}>
+                Cancelar
+              </Button>
+            )}
+            <Button type="submit">{editingIndex !== null ? 'Atualizar' : 'Adicionar'}</Button>
+          </form>
+          <h2>Disponibilidade Atual:</h2>
+          <ul>
+            {times.map((time, index) => (
+              <li key={time}>
+                {new Date(time).toLocaleString()}
+                <button type="button" onClick={() => handleEdit(index)}>
+                  Editar
+                </button>
+                <button type="button" onClick={() => handleDelete(index)}>
+                  Apagar
+                </button>
+              </li>
+            ))}
+          </ul>
+          {times.length > 0 && (
+            <>
+              <button type="button" onClick={handleClear}>
+                Limpar
+              </button>
+              <button type="button" onClick={handleSave}>
+                Salvar
+              </button>
+            </>
           )}
-          <button type="submit">{editingIndex !== null ? 'Update' : 'Add'}</button>
-        </form>
-        <h2>Current availability:</h2>
-        <ul>
-          {times.map((time, index) => (
-            <li key={time}>
-              {new Date(time).toLocaleString()}
-              <button type="button" onClick={() => handleEdit(index)}>
-                Edit
-              </button>
-              <button type="button" onClick={() => handleDelete(index)}>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-        {times.length > 0 && (
-          <>
-            <button type="button" onClick={handleClear}>
-              Clear All
-            </button>
-            <button type="button" onClick={handleSave}>
-              Save
-            </button>
-          </>
-        )}
+          
+        </div>
       </div>
     );
+  } else {
+    return <Navigate to='/' />
+  }
   };
-  
   
