@@ -1,0 +1,28 @@
+name: App CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  
+jobs:
+ build:
+ 
+  runs-on: ubuntu-latest
+  
+  steps:
+    - run: npm install
+    - run: npm start
+       
+ tests:
+
+  runs-on: ubuntu-latest
+  
+  environment:
+    name: prd
+    url: 'engenharia-da-pizza.com'
+  needs: build
+  steps: 
+    - name: Testes unitarios
+    - run: npm test
+  
