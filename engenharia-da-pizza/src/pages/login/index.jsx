@@ -1,103 +1,104 @@
 
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
 import logo from "../../assets/logo.svg"
 import "./styles.css"
-import { auth } from "../../services/firebase";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { auth, provider, db } from "../../services/firebase";
+import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from 'react'
+import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import { AuthContext } from "../../contexts/authContext";
+
 
 
 export function Login() {
-  const provider = new GoogleAuthProvider();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [
-  signInWithEmailAndPassword,
-  user,
-  loading,
-  error,
-] = useSignInWithEmailAndPassword(auth);
+  // * Signin with email and password States
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  function handleLogin(e){
-  e.preventDefault();
-  signInWithEmailAndPassword(email, password)
-}
-  if (user) {
-    return console.log(user);
-  }
-  
-
-  const authg = getAuth();
-  const signInGoogle = () => {
-    signInWithPopup(authg, provider)
-      .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        const user = result.user;
-        console.log(user)
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-      });
+  // *  function with email and password
+  const SignIn = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log(user)
+      setEmail("");
+      setPassword("");
+      navigate('/Home')
+    } catch (error) {
+      console.log("error: ", error);
     }
+  };
+
+  // * SignIn with Google
+  const signInWithGoogle = async () => {
+    try {
+      const userCredential = await signInWithPopup(auth, provider)
+      const user = userCredential.user
+      const email = user.email;
+      const usersCollectionRef = doc(db, 'users', user.uid);
+      await updateDoc(usersCollectionRef, { email, googleAuth: true });
+      navigate('/Home')
+
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
 
 
   return (
-  <div className="container">
-    <header className = "header">
-      <img src={logo} alt="Workflow logo" />
-      <span>Informe suas credenciais</span>
-    </header>
+    <div className="container">
+      <header className="header">
+        <img src={logo} alt="Workflow logo" />
+        <span>Informe suas credenciais</span>
+      </header>
 
-    <form>
-      <button type='button' className="googleButton" onClick={signInGoogle}>
-      <span className="googleButtonIcon">
-        <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
-      </span>
-      <span className="googleButtonText">Faça login com o google</span>
-      </button>
-      <div className="inputContainer">
-        <label htmlFor="email">E-Mail</label>
-        <input 
-          type="text"
-          name="email"
-          id="email" 
-          placeholder="johndoe@gmail.com" 
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
+      <form>
+        <button type='button' className="googleButton" onClick={signInWithGoogle}>
+          <span className="googleButtonIcon">
+            <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" />
+          </span>
+          <span className="googleButtonText">Faça login com o google</span>
+        </button>
+        <div className="inputContainer">
+          <label htmlFor="email">E-Mail</label>
+          <input
+            type="text"
+            name="email"
+            id="email"
+            placeholder="johndoe@gmail.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
 
-      <div className="inputContainer">
-        <label htmlFor="password">Password</label>
-        <input 
-          type="password"
-          name="password"
-          id="password" 
-          placeholder="***************" 
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
+        <div className="inputContainer">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="***************"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-      <a href="">Esqueceu sua senha?</a>
+        <a href="">Esqueceu sua senha?</a>
 
-      <button className="button" onClick={handleLogin}>
-        Se conectar
-        <img src="" alt="" />
-      </button>
+        <button className="button" onClick={SignIn}>
+          Se conectar
+          <img src="" alt="" />
+        </button>
 
-      <div className="footer">
-        <p>Ainda não tem conta? <Link to="/register">Criar Conta</Link></p>
-        
-      </div>
-      
-    </form>
-  </div>
+        <div className="footer">
+          <p>Ainda não tem conta? <Link to="/register" className="criarconta">Criar Conta</Link></p>
+
+        </div>
+
+      </form>
+    </div>
   );
-}
 
+}
