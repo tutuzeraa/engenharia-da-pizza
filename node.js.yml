@@ -21,7 +21,6 @@ jobs:
       with:
         node-version: '10.x'
     - name: Install dependencies
-      run: cd ./engenharia-da-pizza
-      run: npm install
+      run: cd ./engenharia-da-pizza && npm install
     - name: Unit Tests
       run: npm test
