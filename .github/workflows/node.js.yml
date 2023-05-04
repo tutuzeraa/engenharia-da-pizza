@@ -20,6 +20,7 @@ jobs:
       with:
         node-version: '10.x'
     - name: Install dependencies
+      run: cd /home/runner/work/engenharia-da-pizza/engenharia-da-pizza
       run: npm install
     - name: Unit Tests
       run: npm test
