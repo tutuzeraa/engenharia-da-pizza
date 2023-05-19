@@ -4,16 +4,16 @@ import logo from "../../assets/logo.svg"
 import "./styles.css"
 import { auth, provider, db } from "../../services/firebase";
 import { useNavigate } from "react-router-dom";
-import React, { useContext, useState } from 'react'
-import { signInWithPopup, signOut, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
-import { AuthContext } from "../../contexts/authContext";
+import React, { useState } from 'react'
+import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
+//import { AuthContext } from "../../contexts/authContext";
 
 
 
 export function Login() {
   // * Signin with email and password States
-  const { setUser } = useContext(AuthContext);
+  //const { setUser } = useContext(AuthContext);
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

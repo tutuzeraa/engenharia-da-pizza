@@ -3,25 +3,25 @@ import React from 'react';
 import "@testing-library/jest-dom";
 import AvailabilityForm from '../AvailabilityForm';
 
-jest.mock('firebase/compat/app', () => {
-  return {
-    firestore: jest.fn(() => {
-      return {
-        collection: jest.fn(() => {
-          return {
-            doc: jest.fn(() => {
-              return {
-                update: jest.fn(() => {
-                  return Promise.resolve();
-                })
-              };
-            })
-          };
-        })
-      };
-    })
-  };
-});
+// jest.mock('firebase/compat/app', () => {
+//   return {
+//     firestore: jest.fn(() => {
+//       return {
+//         collection: jest.fn(() => {
+//           return {
+//             doc: jest.fn(() => {
+//               return {
+//                 update: jest.fn(() => {
+//                   return Promise.resolve();
+//                 })
+//               };
+//             })
+//           };
+//         })
+//       };
+//     })
+//   };
+// });
 
 describe("RendersAvailability", () => {
 
