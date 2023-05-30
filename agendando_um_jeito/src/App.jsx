@@ -9,17 +9,17 @@ import { AvailabilityForm } from "./pages/form/AvailabilityForm";
 
 export function App() {
   return (
-    <AuthProvider>
-      <div>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <div>
           <Routes>
             <Route path='/' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/home' element={<Home />} />
             <Route path='/AvailabilityForm' element={<AvailabilityForm />} />
           </Routes>
-        </BrowserRouter>
-      </div>
-    </AuthProvider>
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
