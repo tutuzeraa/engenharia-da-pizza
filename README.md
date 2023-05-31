@@ -15,6 +15,7 @@ Feito isso, execute os seguintes comando no Powershell ou no terminal:
 ```
 git clone git@github.com:tutuzeraa/engenharia-da-pizza.git
 cd engenharia-da-pizza
+cd agendando_um_jeito
 npm install              # instala as dependências do projeto 
 ```
 
@@ -27,3 +28,17 @@ npm start
 ```
  
 Agora o servidor deve estar funcionando, localmente, em http://localhost:3000 !
+
+## Arquitetura
+
+![Diagrama de Componentes C4](./img/diagrama.png "Diagrama de Componentes")
+Figura 1: Diagrama C4 em nível de componentes
+
+### Estilo Arquitetural
+
+Para a nossa aplicação web, adotamos o estilo arquitetural  **Model-View-Controller (MVC)**, com a segregação dos componentes responsáveis por interagir com o modelo, prover a visualização e servir de intermédio entre o usuário e os serviços.
+
+
+### Componentes e suas funcionalidades
+
+O nosso projeto consiste em uma aplicação web multipáginas. No diagrama acima, está explicitado os principais componentes que atuam como controladores e que são "responsáveis" por cada página, junto de uma breve descrição de suas funções. Além deles, há sub-componentes responsáveis pela visualização e interação direta com o banco de dados, mas por clareza decidimos não incluí-los no diagrama. Esses sub-componentes são chamados dentro dos componentes principais que estão na figura. 
