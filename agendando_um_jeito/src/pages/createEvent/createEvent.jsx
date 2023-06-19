@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { AuthContext } from '../../contexts/authContext.jsx';
 //import "./styles.css"
-import { ViewCreateEvent } from "./createEventForm_view.jsx";
+import { ViewCreateEvent } from "./createEvent_view.jsx";
 
-export function CreateEventForm() {
+export function CreateEvent() {
   return (
     <ViewCreateEvent />
   );
