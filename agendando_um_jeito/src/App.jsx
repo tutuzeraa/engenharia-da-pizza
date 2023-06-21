@@ -6,7 +6,7 @@ import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { AuthProvider } from "./contexts/authContext";
 import { AvailabilityForm } from "./pages/form/AvailabilityForm";
-import { ViewCreateShift } from "./pages/createShift/createShift";
+import { CreateShift } from "./pages/createShift/createShift";
 
 export function App() {
   return (
@@ -18,7 +18,7 @@ export function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/home' element={<Home />} />
             <Route path='/AvailabilityForm' element={<AvailabilityForm />} />
-            <Route path='/ViewCreateShift' element={<ViewCreateShift />} />
+            <Route path='/CreateShift' element={<CreateShift />} />
           </Routes>
         </div>
       </AuthProvider>
