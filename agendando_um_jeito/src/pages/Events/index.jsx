@@ -3,7 +3,6 @@ import 'firebase/compat/firestore'
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import { AuthContext } from '../../contexts/authContext.jsx';
-import { Button } from '@material-ui/core';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import './styles.css'; // Import the CSS file
@@ -86,13 +85,25 @@ export const Events = () => {
     return <Navigate to='/' />
   }
 
+
+
+  const filteredEventos = eventos.filter((event) => {
+    const formattedDate = event.data().date.toDate()
+    console.log(formattedDate)
+    console.log(startDate)
+    console.log(endDate)
+    return (
+      (!startDate || formattedDate >= startDate) &&
+      (!endDate || formattedDate <= endDate)
+    );
+  });
+
   useEffect(() => {
     if (signed) {
       handleLoadData()
     } else {
       handleNotSigned()
     }
-
   }, []);
 
   if (signed) {
@@ -130,14 +141,12 @@ export const Events = () => {
                   style={{ zIndex: 9999 }}
                 />
               </LocalizationProvider>
-
-              <Button type="submit">Salvar</Button>
             </form>
           </div>
           <div className='eventos-container'>
             <div className='eventos-scroll'>
-              {eventos.map((event, index) => (
-                <Evento key={index} event={event} handleVoluntariar={handleVoluntariar}/>
+              {filteredEventos.map((event, index) => (
+                <Evento key={index} event={event} handleVoluntariar={handleVoluntariar} />
               ))}
             </div>
           </div>
