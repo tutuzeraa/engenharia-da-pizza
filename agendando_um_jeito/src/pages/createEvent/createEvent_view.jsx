@@ -1,20 +1,24 @@
-import { BrowserRouter, Link, Router } from "react-router-dom";
-import logo from "../../assets/logo.svg";
+import { Link } from "react-router-dom";
 import React from 'react';
 import './styles.css';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-export function ViewCreateEvent({ SignIn, SignInWithGoogle, setEmail, setPassword }) {
+export function ViewCreateEvent({ handleSubmit, handleEventNameChange, handleResponsableChange, handlePhoneChange, handleDateChange, selectedDate, selectedVacancies, handleVacanciesChange }) {
   return (
     <div className="modal">
-      <h1 className="tituloModal">Criar Turno</h1>
-      <form>
+      <h1 className="tituloModal">Criar Evento</h1>
+      <form onSubmit={handleSubmit}>
         <div className="inputContainer">
           <label>Nome do Evento</label>
           <input
             type="text"
             name="nomeEvento"
             id="nomeEvento"
-            placeholder="Insira um nome para seu evento" />
+            placeholder="Insira um nome para seu evento" 
+            onChange={handleEventNameChange}
+            
+            />
         </div>
 
         <div className="inputContainer">
@@ -23,7 +27,9 @@ export function ViewCreateEvent({ SignIn, SignInWithGoogle, setEmail, setPasswor
             type="text"
             name="nomeResponsavel"
             id="nomeResponsavel"
-            placeholder="Insira o nome da pessoa responsável" />
+            placeholder="Insira o nome da pessoa responsável" 
+            onChange={handleResponsableChange}
+            />
         </div>
 
         <div className="inputContainer">
@@ -32,58 +38,42 @@ export function ViewCreateEvent({ SignIn, SignInWithGoogle, setEmail, setPasswor
             type="text"
             name="telefone"
             id="telefone"
-            placeholder="Insira o telefone da pessoa responsável" />
+            placeholder="Insira o telefone da pessoa responsável" 
+            onChange={handlePhoneChange}
+            />
         </div>
 
         <div className="inputContainer">
-          <label>Selecione o dia da Semana</label>
-          <br />
+          <label>Vagas Disponíveis</label>
           <input
-            type="checkbox"
-            id="segunda"
-            name="segunda"
-            value="segunda" />
-          <label>segunda</label>
-
-          <br />
-          <input
-            type="checkbox"
-            id="terca"
-            name="terca"
-            value="terca" />
-          <label>terca</label>
-
-          <br />
-          <input
-            type="checkbox"
-            id="quarta"
-            name="quarta"
-            value="quarta" />
-          <label>quarta</label>
-
-          <br />
-          <input
-            type="checkbox"
-            id="quinta"
-            name="quinta"
-            value="quinta" />
-          <label>quinta</label>
-
-          <br />
-          <input
-            type="checkbox"
-            id="sexta"
-            name="sexta"
-            value="sexta" />
-          <label>sexta</label>
+            type="number"
+            name="vacancies"
+            id="vacancies"
+            placeholder="Insira o número de vagas disponíveis"
+            onChange={handleVacanciesChange}
+            value={selectedVacancies}
+          />
         </div>
 
-        <button className="button">
+        <div className="inputContainer">
+          <label>Data e Hora do Evento</label>
+          <br />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="Selecione a data"
+              value={selectedDate}
+              onChange={handleDateChange}
+              renderInput={(props) => <input {...props} />}
+            />
+          </LocalizationProvider>
+        </div>
+
+        <button className="button" type="submit">
           Continuar
-          <img src="" alt="" />
         </button>
 
       </form>
+      <Link to="/Home" className="button">Voltar a home </Link>
     </div>
   );
 }

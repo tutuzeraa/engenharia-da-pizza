@@ -18,7 +18,9 @@ export const ViewHome = ({ user, logout }) => {
             <div className='body'>
                 <img className='ilustracao' src={ilustracaoDisponibilidade} alt="Ilustração de uma pessoa em frente a um calendário gigante" />
                 <Link to={'/AvailabilityForm'}><button className='button'>Preencha sua Disponibilidade</button></Link>
+                <Link to={'/CreateEvent'}><button className='button'>Crie um novo Evento</button></Link>
             </div>
+            
 
         </div >
     )
