@@ -5,7 +5,7 @@ import { Register } from "./pages/register";
 import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import { AuthProvider } from "./contexts/authContext";
-import { AvailabilityForm } from "./pages/form/AvailabilityForm";
+import { Events } from "./pages/Events";
 import { CreateEvent } from "./pages/createEvent/createEvent";
 
 
@@ -18,9 +18,9 @@ export function App() {
             <Route path='/' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/home' element={<Home />} />
-            <Route path='/AvailabilityForm' element={<AvailabilityForm />} />
+            <Route path='/Events' element={<Events />} />
             <Route path='/CreateEvent' element={<CreateEvent />} />
-            
+
           </Routes>
         </div>
       </AuthProvider>

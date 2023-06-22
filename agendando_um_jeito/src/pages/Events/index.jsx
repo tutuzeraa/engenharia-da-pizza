@@ -5,14 +5,14 @@ import { AuthContext } from '../../contexts/authContext.jsx';
 import { Button } from '@material-ui/core';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import './AvailabilityForm.css'; // Import the CSS file
-
+import './styles.css'; // Import the CSS file
 import logo from '../../assets/logo.svg'
 import userpic from '../../assets/userpic.svg'
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { Navigate } from 'react-router-dom';
+import Evento from '../../components/Evento';
 
-export const AvailabilityForm = () => {
+export const Events = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { user, logout, signed } = useContext(AuthContext);
@@ -72,34 +72,37 @@ export const AvailabilityForm = () => {
         <div className='body'>
 
           <h2>Filtre os eventos por data!</h2>
+          <div className='datas'>
+            <form onSubmit={handleSubmit}>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Data de início"
+                  value={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  disablePast
+                  fullWidth
+                  inputFormat="dd/MM/yyyy"
+                  format="dd/MM/yyyy"
+                  style={{ zIndex: 9999 }}
+                />
+                <DatePicker
+                  label="Data de término"
+                  value={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  disablePast
+                  fullWidth
+                  inputFormat="dd/MM/yyyy"
+                  format="dd/MM/yyyy"
+                  style={{ zIndex: 9999 }}
+                />
+              </LocalizationProvider>
 
-          <form onSubmit={handleSubmit}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Data de início"
-                value={startDate}
-                onChange={(date) => setStartDate(date)}
-                disablePast
-                fullWidth
-                inputFormat="dd/MM/yyyy"
-                format="dd/MM/yyyy"
-                style={{ zIndex: 9999 }}
-              />
-              <DatePicker
-                label="Data de término"
-                value={endDate}
-                onChange={(date) => setEndDate(date)}
-                disablePast
-                fullWidth
-                inputFormat="dd/MM/yyyy"
-                format="dd/MM/yyyy"
-                style={{ zIndex: 9999 }}
-              />
-            </LocalizationProvider>
-
-            <Button type="submit">Salvar</Button>
-          </form>
-
+              <Button type="submit">Salvar</Button>
+            </form>
+          </div>
+          <div className='eventos'>
+            <Evento />
+          </div>
         </div>
       </div>
     );
