@@ -2,10 +2,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 // import "@testing-library/jest-dom";
-import { AvailabilityForm } from '../pages/form/AvailabilityForm';
+import {Events} from '../pages/form/Events';
 
-describe('renders AvailabilityForm component', () => {
+describe('renders Events component', () => {
   it("renders without crashing", () => {
-    render(<BrowserRouter><AvailabilityForm/></BrowserRouter>);
+    render(<BrowserRouter><Events/></BrowserRouter>);
   });
 });
