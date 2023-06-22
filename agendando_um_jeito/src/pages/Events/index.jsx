@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import 'firebase/compat/firestore'
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebase";
 import { AuthContext } from '../../contexts/authContext.jsx';
 import { Button } from '@material-ui/core';
@@ -16,6 +17,7 @@ export const Events = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const { user, logout, signed } = useContext(AuthContext);
+  const [eventos, setEventos] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,12 +40,24 @@ export const Events = () => {
   };
 
   const handleLoadData = async () => {
-    const currentUser = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(currentUser);
-    const info = docSnap.data();
-    if (info.availability) {
-      setStartDate(info.availability.startDate ? new Date(info.availability.startDate) : null);
-      setEndDate(info.availability.endDate ? new Date(info.availability.endDate) : null);
+    try {
+      const querySnapshot = await getDocs(collection(db, "eventos"));
+      const eventosData = querySnapshot.docs.map((doc) => doc.data());
+      setEventos(eventosData);
+    } catch (error) {
+      console.error("Error fetching eventos:", error);
+    }
+
+    try {
+      const currentUser = doc(db, "users", user.uid);
+      const docSnap = await getDoc(currentUser);
+      const info = docSnap.data();
+      if (info.availability) {
+        setStartDate(info.availability.startDate?.toDate() ?? null);
+        setEndDate(info.availability.endDate?.toDate() ?? null);
+      }
+    } catch (error) {
+      console.error("Error fetching user availability:", error);
     }
   };
 
@@ -101,7 +115,10 @@ export const Events = () => {
             </form>
           </div>
           <div className='eventos'>
-            <Evento />
+            {eventos.map((event, index) => (
+              <Evento key={index} event={event} />
+            ))}
+
           </div>
         </div>
       </div>
