@@ -39,10 +39,31 @@ export const Events = () => {
       });
   };
 
+  const handleVoluntariar = async (eventId) => {
+    try {
+      console.log(user.email)
+      const eventRef = doc(db, "eventos", eventId);
+      const eventDoc = await getDoc(eventRef);
+      const eventData = eventDoc.data();
+
+      if (eventData) {
+        const participants = eventData.participants || [];
+        participants.push(user.email); // Assuming the user's email is available
+
+        await updateDoc(eventRef, { participants });
+        console.log("Successfully added to participants list!");
+      } else {
+        console.error("Event not found!");
+      }
+    } catch (error) {
+      console.error("Error adding to participants list:", error);
+    }
+  };
+
   const handleLoadData = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "eventos"));
-      const eventosData = querySnapshot.docs.map((doc) => doc.data());
+      const eventosData = querySnapshot.docs.map((doc) => doc);
       setEventos(eventosData);
     } catch (error) {
       console.error("Error fetching eventos:", error);
@@ -116,7 +137,7 @@ export const Events = () => {
           <div className='eventos-container'>
             <div className='eventos-scroll'>
               {eventos.map((event, index) => (
-                <Evento key={index} event={event} />
+                <Evento key={index} event={event} handleVoluntariar={handleVoluntariar}/>
               ))}
             </div>
           </div>

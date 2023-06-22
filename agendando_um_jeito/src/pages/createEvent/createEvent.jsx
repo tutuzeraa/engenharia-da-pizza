@@ -24,7 +24,8 @@ export function CreateEvent() {
         ownerName: responsable,
         phoneNumber: phone,
         date: selectedDate,
-        vacancies: vacancies
+        vacancies: vacancies,
+        participants: []
       });
       console.log("Document written with ID: ", docRef.id);
     } catch (error) {
