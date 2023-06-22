@@ -20,7 +20,6 @@ export function App() {
             <Route path='/home' element={<Home />} />
             <Route path='/Events' element={<Events />} />
             <Route path='/CreateEvent' element={<CreateEvent />} />
-
           </Routes>
         </div>
       </AuthProvider>
