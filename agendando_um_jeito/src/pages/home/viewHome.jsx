@@ -12,7 +12,7 @@ export const ViewHome = ({ user, logout }) => {
                 <img className='logo' src={logo} alt="logo da Agendando Um Jeito" />
                 <label className='email' htmlFor="email" placeholder=''>{user.email}</label>
                 <img className='userpic' src={userpic} alt="foto do usuário logado" />
-                <button onClick={() => logout()}> sair </button>
+                <button className='logout' onClick={() => logout()}> sair </button>
             </div >
 
             <div className='body'>

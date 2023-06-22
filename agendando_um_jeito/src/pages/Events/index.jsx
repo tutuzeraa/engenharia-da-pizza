@@ -84,7 +84,6 @@ export const Events = () => {
           <button onClick={() => logout()}> sair </button>
         </div>
         <div className='body'>
-
           <h2>Filtre os eventos por data!</h2>
           <div className='datas'>
             <form onSubmit={handleSubmit}>
@@ -114,11 +113,12 @@ export const Events = () => {
               <Button type="submit">Salvar</Button>
             </form>
           </div>
-          <div className='eventos'>
-            {eventos.map((event, index) => (
-              <Evento key={index} event={event} />
-            ))}
-
+          <div className='eventos-container'>
+            <div className='eventos-scroll'>
+              {eventos.map((event, index) => (
+                <Evento key={index} event={event} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

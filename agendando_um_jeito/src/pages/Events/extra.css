@@ -1,34 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+
 * {
   background-color: transparent;
 }
 
-.eventos-container {
+.container {
   display: flex;
-  overflow-x: auto;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.eventos-scroll {
-  display: flex;
-  gap: 16px;
-  padding: 16px;
-}
-
-/* Additional styling for the Evento component */
-.evento {
+.card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 20px;
+  width: 300px;
   background-color: #f1f5fd;
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
 }
 
-/* Adjust the styling as needed for the Evento component's content */
-.evento-title {
+
+.logo {
+  width: 100px; /* Adjust the width as needed */
+  height: 100px; /* Adjust the height as needed */
+  margin: 0 auto; /* Add auto margin horizontally to center the logo */
+  display: block; /* Add display block to remove any default spacing */
+}
+
+
+
+
+
+.title {
   font-family: 'Inter';
   font-size: 24px;
   font-weight: 500;
@@ -36,15 +43,14 @@
   margin-bottom: 10px;
 }
 
-.evento-ownerName,
-.evento-phoneNumber {
+.ownerName, .phoneNumber {
   font-family: 'Inter';
   font-size: 16px;
   text-align: center;
   margin-bottom: 8px;
 }
 
-.evento-date {
+.date {
   font-family: 'Inter';
   font-size: 16px;
   text-align: center;
@@ -53,14 +59,14 @@
   font-weight: bold;
 }
 
-.evento-vacancies {
+.vacancies {
   font-family: 'Inter';
   font-size: 16px;
   text-align: center;
   margin-bottom: 16px;
 }
 
-.evento-button {
+button {
   width: 160px;
   height: 40px;
   background-color: #4763E4;
@@ -72,6 +78,6 @@
   cursor: pointer;
 }
 
-.evento-button:hover {
+button:hover {
   background-color: #3c55c6;
 }
