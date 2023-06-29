@@ -13,15 +13,6 @@
   background: rgba(71, 99, 228, 0.2);
 }
 
-.header .logo{
-  margin: 0 auto; /* Add auto margin horizontally to center the logo */
-  width: 121.39px;
-  height: 35.96px;
-  left: 26px;
-  top: 13px;
-  background-color: rgba(240, 248, 255, 0);
-}
-
 .header .userpic{
   position: absolute;
   width: 23px;

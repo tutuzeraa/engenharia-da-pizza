@@ -100,7 +100,7 @@ export const Events = () => {
     } else {
       handleNotSigned()
     }
-  }, []);
+  }, [signed]);
 
   return (
     <ViewEvents signed={signed} logout={logout} handleSubmit={handleSubmit} startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} user={user} filteredEventos={filteredEventos} handleVoluntariar={handleVoluntariar} />
