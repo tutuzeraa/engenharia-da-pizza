@@ -16,6 +16,7 @@ export const SignIn = async (email, password, setEmail, setPassword) => {
   };
 
 
+  
 export const SignInWithGoogle = async () => {
     try {
         const userCredential = await signInWithPopup(auth, provider)
