@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import LoginForm from '../pages/login/index';
 
 function isValidEmail(email) {
-  const { getByLabelText } = render(<LoginForm />);
+  const { getByLabelText } = render(<LoginForm/>);
   const emailInput = getByLabelText('email');
   return /\S+@\S+\.\S+/.test(emailInput.value);
 }
