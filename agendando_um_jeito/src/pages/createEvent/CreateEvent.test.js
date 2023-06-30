@@ -1,11 +1,12 @@
 import { render, fireEvent } from '@testing-library/react';
 import React from 'react';
-import createEvent from './createEvent';
+import { BrowserRouter } from 'react-router-dom';
+import { CreateEvent } from './createEvent';
 
 describe('createEvent', () => {
-  it('should update vacancies state and display an error message for invalid input', () => {
-    const { getByLabelText, getByText, queryByText } = render(<createEvent />);
-    const input = getByLabelText('Vacancies:');
+  it('altera o numero de vagas disponiveis e lança um erro no caso de input invalido', () => {
+    const { getByLabelText, getByText, queryByText } = render(<BrowserRouter><CreateEvent /></BrowserRouter>);
+    const input = getByLabelText('Insira o número de vagas disponíveis');
     fireEvent.change(input, { target: { value: '-1' } });
     expect(input.value).toBe('-1');
     expect(getByText('Vacancies must be between 0 and 200')).toBeInTheDocument();
