@@ -1,9 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import LoginForm from '../pages/login/index';
+import {LoginForm} from '../pages/login/index';
+import { BrowserRouter } from 'react-router-dom';
 
 function isValidEmail(email) {
-  const { getByLabelText } = render(<LoginForm/>);
+  const { getByLabelText } = render(<BrowserRouter><LoginForm/></BrowserRouter>);
   const emailInput = getByLabelText('email');
   return /\S+@\S+\.\S+/.test(emailInput.value);
 }
