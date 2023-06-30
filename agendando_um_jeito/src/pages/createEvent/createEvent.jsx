@@ -14,6 +14,7 @@ export function CreateEvent() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [vacancies, setVacancies] = useState(null);
   const { signed } = useContext(AuthContext);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     // Create a new document in the "evento" collection
@@ -46,11 +47,24 @@ export function CreateEvent() {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    const today = new Date();
+    const maxDate = new Date('2099-12-31');
+
+    if (date >= today && date <= maxDate) {
+      setSelectedDate(date);
+    } else {
+      setErrorMessage('Vacancies must be between 0 and 200');
+    }
   };
 
   const handleVacanciesChange = (e) => {
-    setVacancies(Number(e.target.value));
+    const value = Number(e.target.value);
+
+    if (value >= 0 && value <= 200){ 
+      setVacancies(value);
+    } else{
+      setErrorMessage('Vacancies must be between 0 and 200');
+    }
   };
 
   
