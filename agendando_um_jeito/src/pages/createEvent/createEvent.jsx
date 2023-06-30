@@ -47,7 +47,14 @@ export function CreateEvent() {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    const today = new Date();
+    const maxDate = new Date('2099-12-31');
+
+    if (date >= today && date <= maxDate) {
+      setSelectedDate(date);
+    } else {
+      setErrorMessage('Vacancies must be between 0 and 200');
+    }
   };
 
   const handleVacanciesChange = (e) => {
