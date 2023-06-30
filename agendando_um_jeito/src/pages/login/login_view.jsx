@@ -1,11 +1,11 @@
 
-import { BrowserRouter, Link, Router } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg"
 import "./styles.css"
 import React from 'react'
 
 
-export function ViewLogin({SignIn, SignInWithGoogle, setEmail, setPassword}) {
+export function ViewLogin({ SignIn, SignInWithGoogle, setEmail, setPassword }) {
   return (
     <div className="container">
       <header className="header">
